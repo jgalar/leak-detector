@@ -26,9 +26,9 @@ Reading CTF traces with Python:
 http://diamon.org/babeltrace/docs/python/reader/
 
 Tracking memory usage using LTTng events:
-https://lttng.org/docs/#doc-liblttng‑ust‑libc‑pthread-wrapper
+https://lttng.org/docs/#doc-liblttng‑ust‑libc-wrapper
 
-For the curious, EfficiOS has released an internal tool in the same
+For those curious, EfficiOS has released an internal tool in the same
 spirit as this exercise. This tool was developped while trying to track
 down a particularily hard to find memory leak in LTTng-Tools:
 https://github.com/efficios/memleak-finder
