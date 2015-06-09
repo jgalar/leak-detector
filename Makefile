@@ -16,7 +16,7 @@
 # This makefile is purposefully kept simple to support GNU and BSD make.
 
 LOCAL_CPPFLAGS += -I.
-LIBS = -llttng-ust
+LIBS = -llttng-ust -ldl
 
 all: buggy
 

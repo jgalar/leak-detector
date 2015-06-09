@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+#include "buggy_tp.h"
 
 #define REQUEST_PATH "/dev/urandom"
 #define BILLING_PATH "/dev/null"
@@ -95,6 +96,7 @@ char *get_request_data(int fd)
 		goto end;
 	}
 
+	tracepoint(buggy, request_read, fd, bytes_to_read);
 	ret = read(fd, data, (size_t) bytes_to_read);
 	if (ret < 0) {
 		goto end;
@@ -138,8 +140,11 @@ int main(int argc, char **argv)
 			goto end;
 		}
 
+		
+		tracepoint(buggy, request_ready, request_data);
 		ret = process_data(request_data);
 		if (ret < 0) {
+			tracepoint(buggy, request_fail, request_data);
 			/* Bad connection? Let's retry... */
 		        ret = close(fd);
 			if (ret < 0) {
