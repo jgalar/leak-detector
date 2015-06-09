@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdint.h>
+
+#define TRACEPOINT_DEFINE
 #include "buggy_tp.h"
 
 #define REQUEST_PATH "/dev/urandom"
