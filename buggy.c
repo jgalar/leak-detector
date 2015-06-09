@@ -1,7 +1,7 @@
 /*
- * Babeltrace
+ * Buggy application *suspected* of leaking memory...
  *
- * Basic object system
+ * Part of Python Analysis Training
  *
  * Copyright (c) 2015 EfficiOS Inc.
  * Copyright (c) 2015 Jérémie Galarneau <jeremie.galarneau@efficios.com>
