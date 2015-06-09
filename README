@@ -4,6 +4,9 @@ Writing Python Analyses - Leak Finder
 Files provided:
 buggy.c:	Buggy application we suspect of leaking.
 
+Makefile:	Build "buggy" by issuing
+		$ make
+
 run.sh:		Launches "buggy" with liblttng-ust-libc-pthread-wrapper
 		already preloaded.
 
@@ -21,4 +24,3 @@ http://diamon.org/babeltrace/docs/python/reader/
 
 Tracking memory usage using LTTng events:
 https://lttng.org/docs/#doc-liblttng‑ust‑libc‑pthread-wrapper
-
