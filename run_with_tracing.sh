@@ -38,7 +38,7 @@ lttng add-context --userspace --type vpid
 # Start tracing
 lttng start
 
-LD_PRELOAD=liblttng-ust-libc-wrapper.so buggy
+LD_PRELOAD=liblttng-ust-libc-wrapper.so ./buggy
 
 # Stop tracing
 lttng stop

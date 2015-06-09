@@ -27,4 +27,4 @@ if [ ! -f buggy ]; then
     fi
 fi
 
-LD_PRELOAD=liblttng-ust-libc-wrapper.so buggy
+LD_PRELOAD=liblttng-ust-libc-wrapper.so ./buggy
