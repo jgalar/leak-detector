@@ -1,0 +1,48 @@
+The tools will output:
+
+$ ./leak-detector.py ~/lttng-traces/leak_investigation-20151206-153718/
+<Leaks detected>
+[15:37:18.994608336] 44741 bytes leaked at 0x12d79d0
+[15:37:19.099261700] 63277 bytes leaked at 0x12e28a0
+[15:37:20.205956189] 31447 bytes leaked at 0x12fa970
+[15:37:19.432196584] 35208 bytes leaked at 0x12f1fe0
+
+Looking around the first reported timestamp, we notice a "buggy:request_fail" error
+which appears near all reported leaks.
+
+This show how a quick analysis script can help pinpoint a starting point
+for an investigation.
+
+
+$ babeltrace ~/lttng-traces/leak_investigation-20151206-153718/ | grep -C 15 15:37:18.994608336
+[15:37:18.994262499] (+0.000000179) XThink lttng_ust_libc:free: { cpu_id = 1 }, { vpid = 2151 }, { ptr = 0x12D79D0 }
+[15:37:18.994262725] (+0.000000226) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 2 }
+[15:37:18.994263632] (+0.000000907) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 2, buf = 140729084878766 }
+[15:37:18.994263912] (+0.000000280) XThink lttng_ust_libc:malloc: { cpu_id = 1 }, { vpid = 2151 }, { size = 5168, ptr = 0x12D79D0 }
+[15:37:18.994264186] (+0.000000274) XThink buggy:request_read: { cpu_id = 1 }, { vpid = 2151 }, { fd = 14, size = 5168 }
+[15:37:18.994264422] (+0.000000236) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 5168 }
+[15:37:18.994605275] (+0.000340853) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 5168, buf = 19757520 }
+[15:37:18.994605548] (+0.000000273) XThink buggy:request_ready: { cpu_id = 1 }, { vpid = 2151 }, { request_ptr = 0x12D79D0 }
+[15:37:18.994605782] (+0.000000234) XThink syscall_entry_open: { cpu_id = 1 }, { filename = "/dev/null", flags = 1, mode = 4736 }
+[15:37:18.994606361] (+0.000000579) XThink syscall_exit_open: { cpu_id = 1 }, { ret = 260 }
+[15:37:18.994606517] (+0.000000156) XThink syscall_entry_write: { cpu_id = 1 }, { fd = 260, buf = 140729084878807, count = 1 }
+[15:37:18.994606721] (+0.000000204) XThink syscall_exit_write: { cpu_id = 1 }, { ret = 1 }
+[15:37:18.994606902] (+0.000000181) XThink lttng_ust_libc:free: { cpu_id = 1 }, { vpid = 2151 }, { ptr = 0x12D79D0 }
+[15:37:18.994607127] (+0.000000225) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 2 }
+[15:37:18.994608036] (+0.000000909) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 2, buf = 140729084878766 }
+[15:37:18.994608336] (+0.000000300) XThink lttng_ust_libc:malloc: { cpu_id = 1 }, { vpid = 2151 }, { size = 44741, ptr = 0x12D79D0 }
+[15:37:18.994608596] (+0.000000260) XThink buggy:request_read: { cpu_id = 1 }, { vpid = 2151 }, { fd = 14, size = 44741 }
+[15:37:18.994608825] (+0.000000229) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 44741 }
+[15:37:18.997599062] (+0.002990237) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 44741, buf = 19757520 }
+[15:37:18.997599639] (+0.000000577) XThink buggy:request_ready: { cpu_id = 1 }, { vpid = 2151 }, { request_ptr = 0x12D79D0 }
+[15:37:18.997600332] (+0.000000693) XThink buggy:request_fail: { cpu_id = 1 }, { vpid = 2151 }, { request_ptr = 0x12D79D0 }
+[15:37:18.997602878] (+0.000002546) XThink syscall_entry_close: { cpu_id = 1 }, { fd = 14 }
+[15:37:18.997603984] (+0.000001106) XThink syscall_exit_close: { cpu_id = 1 }, { ret = 0 }
+[15:37:18.997605359] (+0.000001375) XThink syscall_entry_open: { cpu_id = 1 }, { filename = "/dev/urandom", flags = 0, mode = 0 }
+[15:37:18.997606876] (+0.000001517) XThink syscall_exit_open: { cpu_id = 1 }, { ret = 14 }
+[15:37:18.997607081] (+0.000000205) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 2 }
+[15:37:18.997608092] (+0.000001011) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 2, buf = 140729084878766 }
+[15:37:18.997613648] (+0.000005556) XThink lttng_ust_libc:malloc: { cpu_id = 1 }, { vpid = 2151 }, { size = 35012, ptr = 0x12E28A0 }
+[15:37:18.997613967] (+0.000000319) XThink buggy:request_read: { cpu_id = 1 }, { vpid = 2151 }, { fd = 14, size = 35012 }
+[15:37:18.997614210] (+0.000000243) XThink syscall_entry_read: { cpu_id = 1 }, { fd = 14, count = 35012 }
+[15:37:18.999924702] (+0.002310492) XThink syscall_exit_read: { cpu_id = 1 }, { ret = 35012, buf = 19802272 }
