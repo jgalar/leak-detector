@@ -17,7 +17,7 @@ run_with_tracing.sh:	Sets-up a tracing session capturing all userspace events
 			destroys the session configuration.
 
 			This script will enable the "vpid" context. The path
-			where the trace has been saved will be printed out.
+			where the trace was been saved will be printed out.
 
 Documentation
 -------------
