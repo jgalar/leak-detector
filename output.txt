@@ -10,7 +10,7 @@ $ ./leak-detector.py ~/lttng-traces/leak_investigation-20151206-153718/
 Looking around the first reported timestamp, we notice a "buggy:request_fail" error
 which appears near all reported leaks.
 
-This show how a quick analysis script can help pinpoint a starting point
+This shows how a quick analysis script can help pinpoint a starting point
 for an investigation.
 
 
